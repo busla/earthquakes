@@ -5,7 +5,15 @@ var request = require('request');
 var CartoDB = require('cartodb');
 var secret = require('./secret.js');
 var schedule = require('node-schedule');
-var client = new CartoDB({user: secret.USER,api_key: secret.API_KEY});
+
+var client = new CartoDB({
+  user: secret.USER, 
+  api_key:     secret.API_KEY,
+  /* e.g. http://myusername.cartodb.com */
+  cartodb_url: 'earthquakes_cartodb'
+});
+
+console.log(client.access_url);
 
 client.on('connect', function() {
   var splitted;
