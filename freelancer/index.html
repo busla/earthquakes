@@ -21,6 +21,7 @@
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -28,7 +29,60 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style type="cartocss/text" id="cartocss">
+    /** torque visualization */
 
+
+    Map {
+    -torque-frame-count:256;
+    -torque-animation-duration:5;
+    -torque-time-attribute:"t";
+    -torque-aggregation-function:"count(cartodb_id)";
+    -torque-resolution:2;
+    -torque-data-aggregation:linear;
+    }
+
+    #earthquakes{
+      comp-op: lighter;
+      marker-fill-opacity: 0.9;
+      marker-line-color: #FFF;
+      marker-line-width: 0;
+      marker-line-opacity: 1;
+      marker-type: ellipse;
+      marker-width: 6;
+      marker-fill: red;
+    }
+    #earthquakes[frame-offset=1] {
+     marker-width:8;
+     marker-fill-opacity:0.45; 
+    }
+    #earthquakes[frame-offset=2] {
+     marker-width:10;
+     marker-fill-opacity:0.225; 
+    }
+    #earthquakes[frame-offset=3] {
+     marker-width:12;
+     marker-fill-opacity:0.15; 
+    }
+    #earthquakes[frame-offset=4] {
+     marker-width:14;
+     marker-fill-opacity:0.1125; 
+    }
+    #earthquakes[frame-offset=5] {
+     marker-width:16;
+     marker-fill-opacity:0.09; 
+    }
+    </style>
+    <style>
+      html, body, #map {
+        width: 100%;
+        height: 400px;
+        padding: 0;
+        margin: 0;
+      }    
+    </style>    
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 </head>
 
 <body id="page-top" class="index">
@@ -79,9 +133,16 @@
     </header>
 
     <!-- Portfolio Grid Section -->
-    <section id="portfolio">
-<iframe width="100%" height="520" frameborder="0" src="http://cartodb.projects.nonni.cc/user/nonni/viz/269ec9be-71fa-11e5-8f49-0242ac1102a9/embed_map" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
-    </section>
+      <div id="datepicker" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 200px">
+          <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+          <span></span> <b class="caret"></b>  &nbsp; Veldu dagsetningu
+      </div>   
+
+      <div id="map">
+      
+      </div>
+
+    
 
 
     <!-- Footer -->
@@ -105,6 +166,7 @@
     </div>
 
     <!-- jQuery -->
+
     <script src="js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
@@ -130,8 +192,12 @@
       ga('create', 'UA-57295641-6', 'auto');
       ga('send', 'pageview');
 
-    </script>    
+    </script>   
 
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+    <script src="js/earthquakes.js"></script>
 </body>
 
 </html>

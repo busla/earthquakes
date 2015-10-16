@@ -10,7 +10,7 @@ var client = new CartoDB({
   user: secret.USER, 
   api_key:     secret.API_KEY,
   /* e.g. http://myusername.cartodb.com */
-  cartodb_url: 'earthquakes_cartodb:8080'
+  cartodb_url: (process.env.CARTODB_URL || 'http://cartodb.projects.nonni.cc:8080')
 });
 
 console.log(client.access_url);

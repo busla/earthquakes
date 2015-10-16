@@ -473,3 +473,19 @@ footer .footer-below {
  filter: FlipH;
  -ms-filter: "FlipH";
  }
+
+/* 
+Prevent Bootstrap from overwriting Torque slider wrapper
+http://stackoverflow.com/questions/31911040/cartodb-torque-map-adding-additional-layers
+*/
+div.cartodb-timeslider .slider-wrapper {
+    box-sizing: content-box;
+}
+
+#datepicker {
+  position: absolute;
+  top: 550px;
+  right: 50px;
+  z-index: 100;
+}
+
