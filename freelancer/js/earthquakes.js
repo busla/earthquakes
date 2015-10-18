@@ -3,10 +3,10 @@ window.onload = function () {
         ranges: {
            'Í dag': [moment(), moment()],
            'Í gær': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-           'Síðustu 7 daga': [moment().subtract(6, 'days'), moment()],
-           'Síðustu 30 daga': [moment().subtract(29, 'days'), moment()],
-           'Þessi mánuður': [moment().startOf('month'), moment().endOf('month')],
-           'Síðasti mánuður': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+           'Síðustu 7 daga': [moment().subtract(6, 'days'), moment()]
+           //'Síðustu 30 daga': [moment().subtract(29, 'days'), moment()],
+           //'Þessi mánuður': [moment().startOf('month'), moment().endOf('month')],
+           //'Síðasti mánuður': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         },        
         "locale": {
           "format": "DD/MM/YYYY",
@@ -45,14 +45,34 @@ window.onload = function () {
         "startDate": moment(),
         "endDate": moment()
     };
+    $('.datepicker .range').html(moment().format('DD. MMM ´YY'));
+    var mapCss = [
+    'Map {',
+    '-torque-frame-count:1000;',
+    '-torque-animation-duration:4;',
+    '-torque-time-attribute:"t";',
+    '-torque-aggregation-function:"count(cartodb_id)";',
+    '-torque-resolution:1;',
+    '-torque-data-aggregation:linear;',
+    '}'
+    ].join('\n');
+
+    function calculateDuration(start, end) {
+      var newDuration = Math.round((end-start) / 15000000);
+      
+      return newDuration;
+    };
 
     function createSelector(torqueLayer) {
-          $('#datepicker').daterangepicker(datePickerConfigs, function(start, end, label) {
+          $('.datepicker').daterangepicker(datePickerConfigs, function(start, end, label) {
             torqueLayer.stop();
-            var datePickerQuery = Mustache.render("SELECT * FROM earthquakes where t BETWEEN ('{{start}}') AND ('{{end}}')", {start: moment.utc(start).toISOString(), end: moment.utc(end).toISOString()});
-            //console.log(datePickerQuery);
+                       
+            torqueLayer.setDuration(calculateDuration(start, end));
+            $('.datepicker .range').html(start.format('DD. MMM') + ' - ' + end.format('DD. MMM'));
+            var datePickerQuery = Mustache.render("SELECT * FROM earthquakes where t BETWEEN ('{{start}}') AND ('{{end}}')", {start: moment.utc(start).toISOString(), end: moment.utc(end).toISOString()});          
+        
             torqueLayer.setSQL(datePickerQuery)
-              .on('load', function() {
+              .on('load', function() {                
                 torqueLayer.play();
             });
           });
@@ -66,6 +86,8 @@ window.onload = function () {
 
     });
     
+    
+
     var MapBox = L.tileLayer('http://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
       attribution: 'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       subdomains: 'abcd',
@@ -75,8 +97,6 @@ window.onload = function () {
 
     map.addLayer(MapBox);    
     
-     
-
     var layerSource = {
         type: 'torque',
         options: {
@@ -92,10 +112,9 @@ window.onload = function () {
             sql_api_protocol: "http",
             sql_api_domain: "cartodb.projects.nonni.cc",            
             user_name: 'nonni',
-            visible: true,
-            table_name: "earthquakes",
-            stat_tag: "269ec9be-71fa-11e5-8f49-0242ac1102a9",
-            cartocss: $("#cartocss").html(),
+            cartocss: (mapCss+$('#cartocss').html())
+            
+
             //tile_style: '/** torque visualization */ Map { -torque-frame-count:19; -torque-animation-duration:2; -torque-time-attribute:"t"; -torque-aggregation-function:"count(cartodb_id)"; -torque-resolution:4; -torque-data-aggregation:linear; } #monkey_jump{ comp-op: lighter; marker-opacity: 0.9; marker-line-color: #FFF; marker-line-width: 0; marker-line-opacity: 1; marker-type: ellipse; marker-width: 12; marker-fill: #FF2900; }'
         }
     };
@@ -103,6 +122,7 @@ window.onload = function () {
     cartodb.createLayer(map,layerSource, {no_cdn:true,cartodb_logo: false})
       .addTo(map)
       .done(function(layer) {
+        
         var torqueLayer = layer;
         createSelector(torqueLayer);
 
@@ -110,13 +130,10 @@ window.onload = function () {
             torqueLayer.play();
         });        
         torqueLayer.on('change:time', function(changes) {
+          
           var st = changes.time.toString().substr(4).split(' ');
           if (st.length > 2) {
             $('.time > .value').text(st[1] + '. ' + st[0] +  ' - ' + st[3].substr(0,5));
-
-            if (changes.step === torqueLayer.provider.getSteps() - 1) {
-                torqueLayer.pause();
-            }            
           }          
 
         });        

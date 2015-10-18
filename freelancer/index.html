@@ -32,16 +32,6 @@
     <style type="cartocss/text" id="cartocss">
     /** torque visualization */
 
-
-    Map {
-    -torque-frame-count:256;
-    -torque-animation-duration:5;
-    -torque-time-attribute:"t";
-    -torque-aggregation-function:"count(cartodb_id)";
-    -torque-resolution:2;
-    -torque-data-aggregation:linear;
-    }
-
     #earthquakes{
       comp-op: lighter;
       marker-fill-opacity: 0.9;
@@ -72,15 +62,7 @@
      marker-width:16;
      marker-fill-opacity:0.09; 
     }
-    </style>
-    <style>
-      html, body, #map {
-        width: 100%;
-        height: 400px;
-        padding: 0;
-        margin: 0;
-      }    
-    </style>    
+    </style>   
     <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 </head>
@@ -116,31 +98,30 @@
         </div>
         <!-- /.container-fluid -->
     </nav>
+    
+      <!-- Header -->
+      <header>
+          <div class="container">
+              <div class="row">
+                  <div class="col-lg-12">
+                      <div class="intro-text">
+                          <span class="name">Jarðskjálftar á Íslandi</span>
+                          <hr class="star-light">
+                          <span class="skills">Gögnin eru sótt á hverri mínútu frá <a href="http://www.vedur.is/skjalftar-og-eldgos/jardskjalftar/#view=table">Veðurstofu Íslands</a></span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </header>
 
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="intro-text">
-                        <span class="name">Jarðskjálftakort</span>
-                        <hr class="star-light">
-                        <span class="skills">Gögnin eru sótt á hverri mínútu frá <a href="http://www.vedur.is/skjalftar-og-eldgos/jardskjalftar/#view=table">Veðurstofu Íslands</a></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Portfolio Grid Section -->
-      <div id="datepicker" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 200px">
-          <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
-          <span></span> <b class="caret"></b>  &nbsp; Veldu dagsetningu
-      </div>   
-
-      <div id="map">
-      
+      <!-- Portfolio Grid Section -->
+      <div class="datepicker-container">
+        <div class="datepicker">
+            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+            <span></span> <b class="caret"></b>  &nbsp; <span class="range"></span>
+        </div>   
       </div>
+      <div id="map"></div>
 
     
 
