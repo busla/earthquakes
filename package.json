@@ -4,7 +4,8 @@
   "description": "Earthquakes geo data to cartodb from www.vedur.is",
   "author": "Jón Levy",
   "scripts": {
-    "start": "node server.js & http-server freelancer/."
+    "start": "node server.js & http-server freelancer/.",
+    "dev": "http-server freelancer/."
   },
   "dependencies": {
     "cartodb": "git://github.com/busla/cartodb-nodejs",
